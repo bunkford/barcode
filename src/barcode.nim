@@ -1,3 +1,7 @@
+## Nim barcode library
+
+## Returns raw data
+
 import strutils, strtabs, re, math, tables, algorithm
 
 type
@@ -76,7 +80,12 @@ proc checksum_s25*(code:string): string
 proc get128ABsequence*(code:string):seq[seq[string]]
 
 proc getBarcodeData*(code: string, tpye: int):BarArray =
-
+  ## Get raw barcode data for specified type.
+  ##
+  ## This can be used to draw the barcode using an image library.
+  ##
+  ## code:string = code to represent.
+  ## tpye:int = barcode type (see constants)
   case tpye:
 
     of TYPE_CODE_39: # CODE 39 - ANSI MH10.8M-1983 - USD-3 - 3 of 9.
@@ -2377,9 +2386,19 @@ proc get128ABsequence(code:string): seq[seq[string]] =
 
   return sequence
 
-## draw 
-proc htmlBarcode(code:string, tpye:int, widthFactor:int = 2, totalHeight:int = 30, color: string = "black"):string =
 
+proc htmlBarcode*(code:string, tpye:int, widthFactor:int = 2, totalHeight:int = 30, color: string = "black"):string =
+  ## html representation of barcode data. 
+  ##
+  ## code:string = code to represent.
+  ## type:int = barcode type (see constants)
+  ## widthFactor:int = width factor for bars
+  ## totalHeight:int = total height of barcode
+  ## color:string = HTML color of bars
+  ##
+  ## return = string of html representing barcode
+  ## 
+  ## This should give you an example of how to use the data to draw barcode.
   var barcodeData = getBarcodeData(code, tpye)
   var html = "<div style='font-size:0;position:relative;width:" & $(barcodeData.maxWidth * widthFactor) & "px;height:" & $totalHeight & "px;'>\n"
   var positionHorizontal = 0
